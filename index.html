@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research Opportunity Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EEEFE9;
+    --surface:#FFFFFF;
+    --ink:#1F2421;
+    --ink-soft:#565F59;
+    --line:#D8D9CF;
+    --pine:#2F5D50;
+    --pine-dark:#234439;
+    --open:#3F7A57;
+    --open-bg:#E4EFE6;
+    --closed:#9A4B3F;
+    --closed-bg:#F3E5E1;
+    --error:#B3392C;
+    --error-bg:#FBE9E6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.5;
+  }
+  h1,h2,h3{
+    font-family:'Source Serif 4', serif;
+    margin:0;
+    font-weight:600;
+  }
+  header{
+    border-bottom:1px solid var(--line);
+    padding:28px 32px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  header .title h1{font-size:28px;}
+  header .title p{margin:4px 0 0; color:var(--ink-soft); font-size:14px;}
+  .btn{
+    font-family:inherit;
+    font-size:14px;
+    font-weight:500;
+    padding:10px 18px;
+    border-radius:3px;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:opacity .15s ease;
+  }
+  .btn:hover{opacity:.85;}
+  .btn-primary{background:var(--pine); color:#fff;}
+  .btn-ghost{background:transparent; border-color:var(--line); color:var(--ink);}
+  .btn-danger{background:var(--closed); color:#fff;}
+  .btn-small{padding:6px 12px; font-size:13px;}
+
+  main{max-width:920px; margin:0 auto; padding:24px 32px 80px;}
+
+  .toolbar{
+    display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;
+  }
+  .toolbar input, .toolbar select{
+    font-family:inherit; font-size:14px;
+    padding:9px 12px; border:1px solid var(--line); border-radius:3px;
+    background:var(--surface); color:var(--ink);
+  }
+  .toolbar input{flex:1; min-width:200px;}
+
+  #banner{
+    display:none;
+    padding:12px 16px;
+    border-radius:3px;
+    font-size:14px;
+    margin-bottom:18px;
+  }
+  #banner.show{display:block;}
+  #banner.ok{background:var(--open-bg); color:var(--open); border:1px solid var(--open);}
+  #banner.err{background:var(--error-bg); color:var(--error); border:1px solid var(--error);}
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:18px 20px;
+    margin-bottom:12px;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    align-items:flex-start;
+  }
+  .card:hover{border-color:var(--pine);}
+  .card .id{
+    font-family:'Source Serif 4', serif;
+    color:var(--ink-soft);
+    font-size:13px;
+    margin-bottom:4px;
+  }
+  .card h3{font-size:18px;}
+  .card .meta{color:var(--ink-soft); font-size:13px; margin-top:6px;}
+  .tag{
+    display:inline-block;
+    font-size:12px;
+    font-weight:600;
+    padding:3px 10px;
+    border-radius:12px;
+    white-space:nowrap;
+  }
+  .tag.open{background:var(--open-bg); color:var(--open);}
+  .tag.closed{background:var(--closed-bg); color:var(--closed);}
+
+  #empty{color:var(--ink-soft); font-style:italic; padding:40px 0; text-align:center; display:none;}
+
+  /* modal */
+  .overlay{
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(31,36,33,.45);
+    align-items:flex-start;
+    justify-content:center;
+    padding:40px 16px;
+    overflow-y:auto;
+    z-index:10;
+  }
+  .overlay.show{display:flex;}
+  .modal{
+    background:var(--surface);
+    border-radius:6px;
+    max-width:560px;
+    width:100%;
+    padding:28px 30px 30px;
+  }
+  .modal h2{font-size:22px; margin-bottom:18px;}
+  .field{margin-bottom:14px;}
+  .field label{
+    display:block; font-size:13px; font-weight:600; margin-bottom:5px; color:var(--ink-soft);
+  }
+  .field input, .field textarea, .field select{
+    width:100%;
+    font-family:inherit; font-size:14px;
+    padding:9px 11px;
+    border:1px solid var(--line); border-radius:3px;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  .field textarea{resize:vertical; min-height:70px;}
+  .field .err-text{color:var(--error); font-size:12px; margin-top:4px; display:none;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .modal-actions{display:flex; justify-content:flex-end; gap:10px; margin-top:20px;}
+
+  /* detail view */
+  .detail-row{margin-bottom:12px;}
+  .detail-row .label{font-size:12px; font-weight:600; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.03em;}
+  .detail-row .value{font-size:15px; margin-top:2px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title">
+    <h1>Research Opportunity Portal</h1>
+    <p>Post and manage research openings for students in one place.</p>
+  </div>
+  <button class="btn btn-primary" id="newBtn">+ New opportunity</button>
+</header>
+
+<main>
+  <div id="banner"></div>
+
+  <div class="toolbar">
+    <input type="text" id="searchInput" placeholder="Search by title or area…">
+    <select id="statusFilter">
+      <option value="">All statuses</option>
+      <option value="Open">Open</option>
+      <option value="Closed">Closed</option>
+    </select>
+  </div>
+
+  <div id="list"></div>
+  <div id="empty">No research opportunities yet — click "New opportunity" to post one.</div>
+</main>
+
+<!-- Create / Edit modal -->
+<div class="overlay" id="formOverlay">
+  <div class="modal">
+    <h2 id="formTitle">New research opportunity</h2>
+    <form id="oppForm" novalidate>
+      <input type="hidden" id="oppId">
+      <div class="field">
+        <label for="f-title">Research title *</label>
+        <input type="text" id="f-title" required>
+        <div class="err-text">Title is required.</div>
+      </div>
+      <div class="field">
+        <label for="f-description">Research description *</label>
+        <textarea id="f-description" required></textarea>
+        <div class="err-text">Description is required.</div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="f-area">Research area *</label>
+          <input type="text" id="f-area" required>
+          <div class="err-text">Required.</div>
+        </div>
+        <div class="field">
+          <label for="f-department">Department *</label>
+          <input type="text" id="f-department" required>
+          <div class="err-text">Required.</div>
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-faculty">Faculty member's name *</label>
+        <input type="text" id="f-faculty" required>
+        <div class="err-text">Required.</div>
+      </div>
+      <div class="field">
+        <label for="f-skills">Required skills</label>
+        <input type="text" id="f-skills" placeholder="e.g. Python, statistics, PyTorch">
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="f-positions">Available positions *</label>
+          <input type="number" id="f-positions" min="1" required>
+          <div class="err-text">Enter a valid number.</div>
+        </div>
+        <div class="field">
+          <label for="f-deadline">Application deadline *</label>
+          <input type="date" id="f-deadline" required>
+          <div class="err-text">Required.</div>
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-status">Status</label>
+        <select id="f-status">
+          <option value="Open">Open</option>
+          <option value="Closed">Closed</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cancelBtn">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="saveBtn">Save opportunity</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Detail modal -->
+<div class="overlay" id="detailOverlay">
+  <div class="modal" id="detailContent"></div>
+</div>
+
+<script>
+// ---- Configuration ----
+// Point this at your running backend.
+const API_BASE = "http://localhost:5000/api/opportunities";
+
+// ---- State ----
+let opportunities = [];
+
+// ---- DOM refs ----
+const listEl = document.getElementById('list');
+const emptyEl = document.getElementById('empty');
+const bannerEl = document.getElementById('banner');
+const searchInput = document.getElementById('searchInput');
+const statusFilter = document.getElementById('statusFilter');
+
+const formOverlay = document.getElementById('formOverlay');
+const oppForm = document.getElementById('oppForm');
+const formTitle = document.getElementById('formTitle');
+const newBtn = document.getElementById('newBtn');
+const cancelBtn = document.getElementById('cancelBtn');
+
+const detailOverlay = document.getElementById('detailOverlay');
+const detailContent = document.getElementById('detailContent');
+
+// ---- Helpers ----
+function showBanner(message, type){
+  bannerEl.textContent = message;
+  bannerEl.className = 'show ' + (type === 'ok' ? 'ok' : 'err');
+  clearTimeout(showBanner._t);
+  showBanner._t = setTimeout(() => bannerEl.classList.remove('show'), 4000);
+}
+
+function fieldError(inputEl, show){
+  const wrap = inputEl.closest('.field');
+  const err = wrap ? wrap.querySelector('.err-text') : null;
+  if (err) err.style.display = show ? 'block' : 'none';
+  inputEl.style.borderColor = show ? 'var(--error)' : 'var(--line)';
+}
+
+async function apiRequest(url, options){
+  let res;
+  try{
+    res = await fetch(url, options);
+  }catch(networkErr){
+    throw new Error('Could not reach the backend. Is the server running at ' + API_BASE + '?');
+  }
+  let data = null;
+  const text = await res.text();
+  if (text){
+    try{ data = JSON.parse(text); }catch(e){ data = null; }
+  }
+  if (!res.ok){
+    const msg = (data && (data.message || data.error)) || ('Request failed with status ' + res.status);
+    const err = new Error(msg);
+    err.status = res.status;
+    throw err;
+  }
+  return data;
+}
+
+// ---- Load & render list ----
+async function loadOpportunities(){
+  try{
+    const data = await apiRequest(API_BASE, { method: 'GET' });
+    opportunities = Array.isArray(data) ? data : (data.opportunities || []);
+    renderList();
+  }catch(err){
+    showBanner(err.message, 'err');
+  }
+}
+
+function renderList(){
+  const q = searchInput.value.trim().toLowerCase();
+  const statusQ = statusFilter.value;
+
+  const filtered = opportunities.filter(op => {
+    const matchesQuery = !q ||
+      (op.title || '').toLowerCase().includes(q) ||
+      (op.area || op.research_area || '').toLowerCase().includes(q);
+    const matchesStatus = !statusQ || op.status === statusQ;
+    return matchesQuery && matchesStatus;
+  });
+
+  listEl.innerHTML = '';
+  emptyEl.style.display = filtered.length ? 'none' : 'block';
+
+  filtered.forEach(op => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div>
+        <div class="id">#${op.id}</div>
+        <h3>${escapeHtml(op.title)}</h3>
+        <div class="meta">${escapeHtml(op.area || op.research_area || '')} · ${escapeHtml(op.department || '')} · ${escapeHtml(op.faculty_name || '')}</div>
+      </div>
+      <span class="tag ${op.status === 'Closed' ? 'closed' : 'open'}">${op.status}</span>
+    `;
+    card.addEventListener('click', () => openDetail(op.id));
+    listEl.appendChild(card);
+  });
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str == null ? '' : String(str);
+  return d.innerHTML;
+}
+
+// ---- Detail view ----
+async function openDetail(id){
+  try{
+    const op = await apiRequest(`${API_BASE}/${id}`, { method: 'GET' });
+    detailContent.innerHTML = `
+      <h2>${escapeHtml(op.title)}</h2>
+      <div class="detail-row"><div class="label">Status</div>
+        <div class="value"><span class="tag ${op.status === 'Closed' ? 'closed' : 'open'}">${op.status}</span></div>
+      </div>
+      <div class="detail-row"><div class="label">Description</div><div class="value">${escapeHtml(op.description)}</div></div>
+      <div class="detail-row"><div class="label">Research area</div><div class="value">${escapeHtml(op.area || op.research_area || '')}</div></div>
+      <div class="detail-row"><div class="label">Faculty member</div><div class="value">${escapeHtml(op.faculty_name)}</div></div>
+      <div class="detail-row"><div class="label">Department</div><div class="value">${escapeHtml(op.department)}</div></div>
+      <div class="detail-row"><div class="label">Required skills</div><div class="value">${escapeHtml(op.skills || '—')}</div></div>
+      <div class="detail-row"><div class="label">Available positions</div><div class="value">${escapeHtml(op.positions)}</div></div>
+      <div class="detail-row"><div class="label">Application deadline</div><div class="value">${escapeHtml(op.deadline)}</div></div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost btn-small" id="toggleStatusBtn">
+          Mark as ${op.status === 'Closed' ? 'Open' : 'Closed'}
+        </button>
+        <button class="btn btn-ghost btn-small" id="editBtn">Edit</button>
+        <button class="btn btn-danger btn-small" id="deleteBtn">Delete</button>
+        <button class="btn btn-primary btn-small" id="closeDetailBtn">Close</button>
+      </div>
+    `;
+    detailOverlay.classList.add('show');
+
+    document.getElementById('closeDetailBtn').onclick = () => detailOverlay.classList.remove('show');
+    document.getElementById('editBtn').onclick = () => { detailOverlay.classList.remove('show'); openForm(op); };
+    document.getElementById('deleteBtn').onclick = () => deleteOpportunity(op.id);
+    document.getElementById('toggleStatusBtn').onclick = () => toggleStatus(op);
+  }catch(err){
+    showBanner(err.message, 'err');
+  }
+}
+
+detailOverlay.addEventListener('click', (e) => {
+  if (e.target === detailOverlay) detailOverlay.classList.remove('show');
+});
+
+// ---- Create / Edit form ----
+function openForm(op){
+  oppForm.reset();
+  ['f-title','f-description','f-area','f-department','f-faculty','f-positions','f-deadline'].forEach(id => {
+    fieldError(document.getElementById(id), false);
+  });
+
+  if (op){
+    formTitle.textContent = 'Edit research opportunity';
+    document.getElementById('oppId').value = op.id;
+    document.getElementById('f-title').value = op.title || '';
+    document.getElementById('f-description').value = op.description || '';
+    document.getElementById('f-area').value = op.area || op.research_area || '';
+    document.getElementById('f-department').value = op.department || '';
+    document.getElementById('f-faculty').value = op.faculty_name || '';
+    document.getElementById('f-skills').value = op.skills || '';
+    document.getElementById('f-positions').value = op.positions || '';
+    document.getElementById('f-deadline').value = op.deadline || '';
+    document.getElementById('f-status').value = op.status || 'Open';
+  } else {
+    formTitle.textContent = 'New research opportunity';
+    document.getElementById('oppId').value = '';
+    document.getElementById('f-status').value = 'Open';
+  }
+  formOverlay.classList.add('show');
+}
+
+newBtn.addEventListener('click', () => openForm(null));
+cancelBtn.addEventListener('click', () => formOverlay.classList.remove('show'));
+formOverlay.addEventListener('click', (e) => {
+  if (e.target === formOverlay) formOverlay.classList.remove('show');
+});
+
+oppForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const fields = {
+    title: document.getElementById('f-title'),
+    description: document.getElementById('f-description'),
+    area: document.getElementById('f-area'),
+    department: document.getElementById('f-department'),
+    faculty_name: document.getElementById('f-faculty'),
+    positions: document.getElementById('f-positions'),
+    deadline: document.getElementById('f-deadline'),
+  };
+
+  let valid = true;
+  Object.values(fields).forEach(input => {
+    const empty = !input.value || !String(input.value).trim();
+    fieldError(input, empty);
+    if (empty) valid = false;
+  });
+  if (fields.positions.value && Number(fields.positions.value) < 1){
+    fieldError(fields.positions, true);
+    valid = false;
+  }
+  if (!valid){
+    showBanner('Please fill in all required fields.', 'err');
+    return;
+  }
+
+  const payload = {
+    title: fields.title.value.trim(),
+    description: fields.description.value.trim(),
+    area: fields.area.value.trim(),
+    department: fields.department.value.trim(),
+    faculty_name: fields.faculty_name.value.trim(),
+    skills: document.getElementById('f-skills').value.trim(),
+    positions: Number(fields.positions.value),
+    deadline: fields.deadline.value,
+    status: document.getElementById('f-status').value,
+  };
+
+  const id = document.getElementById('oppId').value;
+  const saveBtn = document.getElementById('saveBtn');
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Saving…';
+
+  try{
+    if (id){
+      await apiRequest(`${API_BASE}/${id}`, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+      });
+      showBanner('Opportunity updated.', 'ok');
+    } else {
+      await apiRequest(API_BASE, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+      });
+      showBanner('Opportunity created.', 'ok');
+    }
+    formOverlay.classList.remove('show');
+    loadOpportunities();
+  }catch(err){
+    showBanner(err.message, 'err');
+  }finally{
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'Save opportunity';
+  }
+});
+
+// ---- Delete ----
+async function deleteOpportunity(id){
+  if (!confirm('Delete this research opportunity? This cannot be undone.')) return;
+  try{
+    await apiRequest(`${API_BASE}/${id}`, { method: 'DELETE' });
+    showBanner('Opportunity deleted.', 'ok');
+    detailOverlay.classList.remove('show');
+    loadOpportunities();
+  }catch(err){
+    showBanner(err.message, 'err');
+  }
+}
+
+// ---- Toggle status ----
+async function toggleStatus(op){
+  const newStatus = op.status === 'Closed' ? 'Open' : 'Closed';
+  try{
+    await apiRequest(`${API_BASE}/${op.id}`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ ...op, status: newStatus })
+    });
+    showBanner(`Marked as ${newStatus}.`, 'ok');
+    detailOverlay.classList.remove('show');
+    loadOpportunities();
+  }catch(err){
+    showBanner(err.message, 'err');
+  }
+}
+
+// ---- Filters ----
+searchInput.addEventListener('input', renderList);
+statusFilter.addEventListener('change', renderList);
+
+// ---- Init ----
+loadOpportunities();
+</script>
+</body>
+</html>

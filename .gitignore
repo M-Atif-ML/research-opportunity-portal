@@ -1,0 +1,8 @@
+api_env/
+postman_agent/
+instance/
+__pycache__/
+*.pyc
+*.db
+.env
+node_modules/
