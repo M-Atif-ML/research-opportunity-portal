@@ -1,12 +1,12 @@
 from flask import Flask,jsonify,request
 from flask_sqlalchemy import SQLAlchemy 
 from flask_cors import CORS
-
-
-
+import os 
+from dotenv import load_dotenv
+load_dotenv()
 app = Flask(__name__)
 CORS(app)
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://flaskuser:atif123@localhost/research_portal"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 
 db = SQLAlchemy(app)
 
