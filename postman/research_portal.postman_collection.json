@@ -1,0 +1,301 @@
+{
+  "info": {
+    "_postman_id": "a508aa00-bf74-45ed-b5f5-4c57f7fe9532",
+    "name": "My Collection",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58575887",
+    "_collection_link": "https://go.postman.co/collection/58575887-a508aa00-bf74-45ed-b5f5-4c57f7fe9532?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Create Opportunity 1",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Machine Learning Research Assistant\",\n  \"description\": \"Assist in developing deep learning models for medical image classification using CNNs.\",\n  \"area\": \"Machine Learning\",\n  \"faculty_name\": \"Dr. Sara Ahmed\",\n  \"department\": \"Computer Science\",\n  \"skills\": \"Python, TensorFlow, PyTorch\",\n  \"positions\": 2,\n  \"deadline\": \"2026-11-15\",\n  \"status\": \"Open\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:5000/api/opportunities",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "opportunities"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Opportunity 2",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Network Security Analysis Intern\",\n  \"description\": \"Study intrusion detection systems and analyze traffic patterns for anomaly detection in campus networks.\",\n  \"area\": \"Cybersecurity\",\n  \"faculty_name\": \"Dr. Bilal Hussain\",\n  \"department\": \"Computer Networks\",\n  \"skills\": \"Wireshark, Python, Linux\",\n  \"positions\": 1,\n  \"deadline\": \"2026-10-30\",\n  \"status\": \"Open\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:5000/api/opportunities",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "opportunities"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Opportunity 3",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Natural Language Processing Study\",\n  \"description\": \"Explore transformer-based models for Urdu-English code-switched sentiment analysis.\",\n  \"area\": \"NLP\",\n  \"faculty_name\": \"Dr. Ayesha Malik\",\n  \"department\": \"Artificial Intelligence\",\n  \"skills\": \"Python, Hugging Face, NLP fundamentals\",\n  \"positions\": 3,\n  \"deadline\": \"2026-12-20\",\n  \"status\": \"Open\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:5000/api/opportunities",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "opportunities"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Opportunities",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:5000/api/opportunities",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "opportunities"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get One Opportunity",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:5000/api/opportunities/16",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "opportunities",
+            "16"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Opportunity",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Advanced Machine Learning Research Assistant\",\n  \"positions\": 4,\n  \"skills\": \"Python, TensorFlow, PyTorch, scikit-learn\",\n  \"deadline\": \"2026-12-01\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:5000/api/opportunities/16",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "opportunities",
+            "16"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Close Opportunity",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"Closed\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:5000/api/opportunities/20",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "opportunities",
+            "20"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Opportunity",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:5000/api/opportunities/20",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "opportunities",
+            "20"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Deleted Opportunity",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:5000/api/opportunities/20",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "opportunities",
+            "20"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Invalid Opportunity",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"description\": \"This request is missing the title field on purpose.\",\n  \"area\": \"Testing\",\n  \"faculty_name\": \"Dr. Test\",\n  \"department\": \"QA\",\n  \"positions\": 1,\n  \"deadline\": \"2026-12-01\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:5000/api/opportunities",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "opportunities"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
